@@ -1,9 +1,13 @@
 ﻿global:
-  scrape_interval: 5s
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  evaluation_interval: 15s
 
-scrape_configs:
+scrape_configs:  # Corrected from 'crape_configs'
   - job_name: 'observability_example'
-    scrape_interval: 5s
+    scrape_interval: 15s
+    honor_timestamps: true
+    scrape_timeout: 10s  
     static_configs:
-      - targets: ['observabilityexample:5300']
+      - targets: ['host.docker.internal:5300']
     metrics_path: '/metrics'
