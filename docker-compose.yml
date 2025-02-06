@@ -1,0 +1,49 @@
+version: '3.8'
+
+
+services:
+  observabilityexample:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5300:5300"
+    networks:
+      - monitoring
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5300
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5300/metrics"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - monitoring
+    depends_on:
+      - observabilityexample
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - monitoring
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686"
+      - "4317:4317"
+    networks:
+      - monitoring
+
+networks:
+  monitoring:

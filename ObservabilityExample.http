@@ -1,0 +1,6 @@
+@ObservabilityExample_HostAddress = http://localhost:5261
+
+GET {{ObservabilityExample_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
