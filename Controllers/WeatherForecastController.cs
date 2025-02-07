@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using ObservabilityExample.Extensions.Helper;
 
 namespace ObservabilityExample.Controllers
 {
@@ -21,6 +22,7 @@ namespace ObservabilityExample.Controllers
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
+            RegisterMetrics.WeatherForecastRequests.Add(1);
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
